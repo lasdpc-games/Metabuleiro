@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a6f8d73efe772945b8e59139e065ffc, type: 3}
+  m_Name: PERGUNTA 3
+  m_EditorClassIdentifier: 
+  questionName: "A respira\xE7\xE3o celular (que acontece na mitoc\xF4ndria) \xE9
+    um processo de oxida\xE7\xE3o de mol\xE9culas org\xE2nicas(\xE1cidos graxos e
+    glicer\xEDdeos, principal a glicose, que \xE9 respons\xE1vel pela produ\xE7\xE3o
+    de:"
+  correction: "A respira\xE7\xE3o celular \xE9 a respons\xE1vel por gerar energia
+    para a c\xE9lula"
+  wrongAnswers:
+  - "Prote\xEDnas"
+  - RNA
+  - DNA
+  correctAnswer: ATP
+  correctAnswerValue: 0
