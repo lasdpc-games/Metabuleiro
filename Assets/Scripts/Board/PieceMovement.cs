@@ -9,11 +9,13 @@ public class PieceMovement : MonoBehaviour{
     public int numberOfPlayers = 1;
     public Sprite[] avatars;
 
-    int turnsPlayed = 0;
-    int currentPlayer;
+    int turnsPlayed = 0, currentPlayer;
+    int diceValue;
 
     Board gameBoard;
     PlayerToken[] players;
+
+    public UpdateUIScript updateUIscript;
 
     void Start(){
         gameBoard = GetComponent<Board>();
@@ -27,30 +29,28 @@ public class PieceMovement : MonoBehaviour{
             players[i].avatar.transform.localScale = Vector3.one;
             Image av = players[i].avatar.GetComponent<Image>();
             av.sprite = avatars[i];
-            MovePiece(players[i], 0);
+            diceValue = 0;
+            currentPlayer = i;
+            MovePiece();
         }
     }
 
     private void Update() {
-        if(Input.GetKeyDown(KeyCode.A)){
-            Turn();
-        }
     }
 
-    void Turn(){
+    public void Turn(){
         currentPlayer = turnsPlayed%numberOfPlayers;
-
         PopQuestion();
         turnsPlayed++;
     }
 
     void PopQuestion(){
-        int diceValue = DiceRoll();
+        diceValue = DiceRoll();
         Debug.Log(diceValue);
-        //show question
+        updateUIscript.ShowQuestion();
         //if right
-            //correct answer animation
-            MovePiece(players[currentPlayer], diceValue);
+        //correct answer animation
+        //MovePiece
     }
 
     int DiceRoll(){
@@ -61,8 +61,9 @@ public class PieceMovement : MonoBehaviour{
         return diceValue;
     }
 
-    void MovePiece(PlayerToken player, int distance){
-        player.pos += distance;
+    public void MovePiece(){
+        PlayerToken player = players[currentPlayer];
+        player.pos += diceValue;
 
         if(player.pos >= gameBoard.pathPos.Length){
             //win

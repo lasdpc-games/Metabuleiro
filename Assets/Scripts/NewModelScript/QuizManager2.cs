@@ -8,6 +8,7 @@ public class QuizManager2 : MonoBehaviour {
     
     #region variables
     [HideInInspector]
+    public PieceMovement pieceMovementScript;
     public QuestionCSV[] questions;
     [HideInInspector]
     public List<QuestionCSV> unansweredQuestions, questionsToAnswerAgain = new List<QuestionCSV> ();
@@ -36,17 +37,13 @@ public class QuizManager2 : MonoBehaviour {
         updateUIScript = GetComponent<UpdateUIScript> ();
         timerScript = GetComponent<TimerScript> ();
         getQuestionsFromCSVScript = GetComponent<GetQuestionsFromCSV> ();
-        if (levelChosen == 0) {
-            SceneManager.LoadScene ("Menu");
-        } else {
-            questions = getQuestionsFromCSVScript.GetQuestions (levelChosen);
-            questionsWithImages = getQuestionsFromCSVScript.GetQuestionsWithImages (levelChosen);
+            questions = getQuestionsFromCSVScript.GetQuestions (1);
+            questionsWithImages = getQuestionsFromCSVScript.GetQuestionsWithImages (1);
             verifyAchivements = GetComponent<VerifyAchivements> ();
             FillAnswers ();
             updateUIScript.UpdateUI (7);
             GetRandomQuestion ();
             timerScript.StartCoroutine ("Timer", 1);
-        }
     }
     void FillAnswers () {
         unansweredQuestions = questions.ToList<QuestionCSV> ();
@@ -54,97 +51,24 @@ public class QuizManager2 : MonoBehaviour {
     }
     public void GetRandomQuestion () {
         if (secondChance == false) {
-            if (updateUIScript.layoutChosen == 1) {
-                int questionIndex = Random.Range (0, unansweredQuestions.Count);
-                currentQuestion = unansweredQuestions[questionIndex];
-            } else {
-                int questionIndex = Random.Range (0, unansweredQuestionsWithImages.Count);
-                currentQuestionWithImage = unansweredQuestionsWithImages[questionIndex];
-            }
+            int questionIndex = Random.Range (0, unansweredQuestions.Count);
+            currentQuestion = unansweredQuestions[questionIndex];
         } else {
-            if (updateUIScript.layoutChosen == 1) {
-                int questionIndex = Random.Range (0, questionsToAnswerAgain.Count);
-                currentQuestion = questionsToAnswerAgain[questionIndex];
-            } else {
-                int questionIndex = Random.Range (0, questionsWithImagesToAnswerAgain.Count);
-                currentQuestionWithImage = questionsWithImagesToAnswerAgain[questionIndex];
-            }
+            int questionIndex = Random.Range (0, questionsToAnswerAgain.Count);
+            currentQuestion = questionsToAnswerAgain[questionIndex];
+            
         }
         updateUIScript.UpdateUI (3);
     }
     public void AnswerButtonSelected (int answerSelected) {
-        if (secondChance == false) {
-            if (updateUIScript.layoutChosen == 1) {
-                unansweredQuestions.Remove (currentQuestion);
-            } else {
-                unansweredQuestionsWithImages.Remove (currentQuestionWithImage);
-            }
-        } else {
-            if (updateUIScript.layoutChosen == 1) {
-                questionsToAnswerAgain.Remove (currentQuestion);
-            } else {
-                questionsWithImagesToAnswerAgain.Remove (currentQuestionWithImage);
-            }
-        }
+        unansweredQuestions.Remove (currentQuestion);
         timerScript.StopCoroutine ("Timer");
-        if (updateUIScript.layoutChosen == 1) {
-            if (answerSelected == currentQuestion.correctAnswerValue) {
-                if ((secondChance == false) && (levelChosen != 4)) {
-                    combo++;
-                    if (combo > 6) {
-                        genericScore += 6;
-                    } else if (combo > 4) {
-                        genericScore += 4;
-                    } else {
-                        genericScore += 2;
-                    }
-                    updateUIScript.UpdateUI (2);
-                } else {
-                    genericScore += 1;
-                }
-                updateUIScript.UpdateScreens (2);
-                updateUIScript.UpdateUI (1);
-            } else {
-                if ((secondChance == false) && (levelChosen != 4)) {
-                    questionsToAnswerAgain.Add (currentQuestion);
-                    combo = 0;
-                    updateUIScript.UpdateUI (2);
-                    updateUIScript.UpdateUI (10);
-                    updateUIScript.UpdateScreens (3);
-                } else if (levelChosen == 4) {
-                    updateUIScript.UpdateScreens (4);
-                } else if (secondChance == true) {
-                    updateUIScript.UpdateUI (10);
-                    updateUIScript.UpdateScreens (3);
-                }
-            }
-        } else {
-            if (answerSelected == currentQuestionWithImage.correctAnswerValue) {
-                if (secondChance == false) {
-                    combo++;
-                    if (combo > 6) {
-                        genericScore += 6;
-                    } else if (combo > 4) {
-                        genericScore += 4;
-                    } else {
-                        genericScore += 2;
-                    }
-                    updateUIScript.UpdateUI (2);
-                } else {
-                    genericScore += 1;
-                }
-                updateUIScript.UpdateScreens (2);
-                updateUIScript.UpdateUI (1);
-            } else {
-                if (secondChance == false) {
-                    questionsWithImagesToAnswerAgain.Add (currentQuestionWithImage);
-                    combo = 0;
-                    updateUIScript.UpdateUI (2);
-                }
-                updateUIScript.UpdateUI (10);
-                updateUIScript.UpdateScreens (3);
-            }
+        bool correct = false;
+        if (answerSelected == currentQuestion.correctAnswerValue){
+            correct = true;
+            FindObjectOfType<PieceMovement>().MovePiece();
         }
+        updateUIScript.ShowAfterAnswerScreen(correct);
     }
     public void ReloadQuestion () {
         ConvertScore ();
