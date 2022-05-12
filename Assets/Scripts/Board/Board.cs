@@ -23,7 +23,32 @@ public class Board : MonoBehaviour{
         }
 
         for (int i = 0; i < pathPos.Length; i++){
-            board[(int)pathPos[i].x - 1][(int)pathPos[i].y - 1].GetComponent<Image>().color = Color.red;
+
+            int helper = (int)((pathPos[i].y - 1)%2);
+            byte colorB = 0;
+            Debug.Log(helper);
+            switch (helper){
+                case 0:
+                    colorB = 80;
+                    break;
+                case 1:
+                    colorB = 255;
+                    break;
+            }
+
+            helper = (int)((pathPos[i].x - 1)%2);
+            byte colorG = 0;
+            Debug.Log(helper);
+            switch (helper){
+                case 0:
+                    colorG = 80;
+                    break;
+                case 1:
+                    colorG = 255;
+                    break;
+            }
+
+            board[(int)pathPos[i].x - 1][(int)pathPos[i].y - 1].GetComponent<Image>().color = new Color32(0,colorG,colorB,255);
             //?Debug.Log(board[(int)pathPos[i].x - 1][(int)pathPos[i].y - 1].name);
         }
     }
