@@ -13,12 +13,15 @@ public class PieceMovement : MonoBehaviour{
     int diceValue;
 
     Board gameBoard;
+
     PlayerToken[] players;
 
     public UpdateUIScript updateUIscript;
+    public PieceUI pieceUI;
 
     void Start(){
         gameBoard = GetComponent<Board>();
+        QuizManager2.OnAnswer += Answer;
 
         players = new PlayerToken[numberOfPlayers];
 
@@ -33,6 +36,10 @@ public class PieceMovement : MonoBehaviour{
             currentPlayer = i;
             MovePiece();
         }
+
+        currentPlayer = 0;
+        pieceUI.InitializeUI(players);
+        pieceUI.UpdateUI(players, currentPlayer);
     }
 
     private void Update() {
@@ -47,10 +54,23 @@ public class PieceMovement : MonoBehaviour{
     void PopQuestion(){
         diceValue = DiceRoll();
         Debug.Log(diceValue);
+        players[currentPlayer].questionsAsked++;
         updateUIscript.ShowQuestion();
         //if right
         //correct answer animation
         //MovePiece
+    }
+
+    void Answer(int v){
+        if(v != 0){
+            MovePiece();
+            players[currentPlayer].points += 1;
+            currentPlayer = turnsPlayed%numberOfPlayers;
+        }else{
+            currentPlayer = turnsPlayed%numberOfPlayers;
+        }
+        Debug.Log("Current player: " + currentPlayer);
+        pieceUI.UpdateUI(players, currentPlayer);
     }
 
     int DiceRoll(){

@@ -60,13 +60,20 @@ public class QuizManager2 : MonoBehaviour {
         }
         updateUIScript.UpdateUI (3);
     }
+
+    public delegate void Answered(int v);
+    public static event Answered OnAnswer;
+
     public void AnswerButtonSelected (int answerSelected) {
         unansweredQuestions.Remove (currentQuestion);
         timerScript.StopCoroutine ("Timer");
         bool correct = false;
         if (answerSelected == currentQuestion.correctAnswerValue){
             correct = true;
-            FindObjectOfType<PieceMovement>().MovePiece();
+            OnAnswer(1);
+            //FindObjectOfType<PieceMovement>().MovePiece();
+        }else{
+            OnAnswer(0);
         }
         updateUIScript.ShowAfterAnswerScreen(correct);
     }
