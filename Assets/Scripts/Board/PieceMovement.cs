@@ -9,6 +9,14 @@ public class PieceMovement : MonoBehaviour{
     public int numberOfPlayers = 1;
     public Sprite[] avatars;
 
+    public UpdateUIScript updateUIscript;
+    public PieceUI pieceUI;
+    public GameObject dice;
+
+    private Sprite[] diceSides;
+
+    // Reference to sprite renderer to change sprites
+
     int turnsPlayed = 0, currentPlayer;
     int diceValue;
 
@@ -16,18 +24,18 @@ public class PieceMovement : MonoBehaviour{
 
     PlayerToken[] players;
 
-    public UpdateUIScript updateUIscript;
-    public PieceUI pieceUI;
-
     void Start(){
+        diceSides = Resources.LoadAll<Sprite>("DiceSides/");
         gameBoard = GetComponent<Board>();
         QuizManager2.OnAnswer += Answer;
 
-        players = new PlayerToken[numberOfPlayers];
+        players = PlayerSelectorUI.players;
+        numberOfPlayers = players.Length;
+        /*new PlayerToken[numberOfPlayers];*/
 
         for (int i = 0; i < numberOfPlayers; i++){
-            players[i] = new PlayerToken();
-            players[i].avatar = new GameObject("player" + i, typeof(Image));
+            //players[i] = new PlayerToken();
+            players[i].avatar = new GameObject("player0" + i+1, typeof(Image));
             players[i].avatar.transform.SetParent(FindObjectOfType<Canvas>().transform);
             players[i].avatar.transform.localScale = Vector3.one;
             Image av = players[i].avatar.GetComponent<Image>();
@@ -47,13 +55,30 @@ public class PieceMovement : MonoBehaviour{
 
     public void Turn(){
         currentPlayer = turnsPlayed%numberOfPlayers;
-        PopQuestion();
+        StartCoroutine(RollDice());
         turnsPlayed++;
     }
 
-    void PopQuestion(){
-        diceValue = DiceRoll();
+    IEnumerator RollDice(){
+        diceValue = DiceValue();
         Debug.Log(diceValue);
+
+        dice.SetActive(true);
+        Image rend = dice.GetComponent<Image>();
+
+        int randomDiceSide = 0;
+        for (int i = 0; i <= 20; i++){
+            randomDiceSide = Random.Range(0, 6);
+            rend.sprite = diceSides[randomDiceSide];
+
+            yield return new WaitForSeconds(0.05f);
+        }
+
+        rend.sprite = diceSides[diceValue - 1];
+        yield return new WaitForSeconds(3f);
+
+        dice.SetActive(false);
+
         players[currentPlayer].questionsAsked++;
         updateUIscript.ShowQuestion();
         //if right
@@ -69,15 +94,12 @@ public class PieceMovement : MonoBehaviour{
         }else{
             currentPlayer = turnsPlayed%numberOfPlayers;
         }
-        Debug.Log("Current player: " + currentPlayer);
         pieceUI.UpdateUI(players, currentPlayer);
     }
 
-    int DiceRoll(){
+    int DiceValue(){
         System.Random rnd = new System.Random();
         int diceValue = rnd.Next(1, 7);
-        //animate dice roll
-        //show result
         return diceValue;
     }
 
@@ -86,8 +108,8 @@ public class PieceMovement : MonoBehaviour{
         player.pos += diceValue;
 
         if(player.pos >= gameBoard.pathPos.Length){
-            //win
             Debug.Log("Player " + currentPlayer + " won the game");
+            
         }
         Vector2 newPathPos = gameBoard.pathPos[player.pos];
         player.avatar.transform.SetParent(gameBoard.board[(int)newPathPos.x - 1][(int)newPathPos.y - 1].transform);

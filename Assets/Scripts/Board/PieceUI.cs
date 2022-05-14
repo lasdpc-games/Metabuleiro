@@ -9,7 +9,7 @@ public class PieceUI : MonoBehaviour{
 
     Sprite[] avatars;
 
-    private void Start() {
+    private void Awake() {
         avatars = FindObjectOfType<PieceMovement>().avatars;
     }
 
