@@ -81,12 +81,12 @@ public class QuizManager2 : MonoBehaviour {
         ConvertScore ();
         verifyAchivements.VerifyAchivement ();
         if (levelChosen == 4) {
-            if ((unansweredQuestions.Count + unansweredQuestionsWithImages.Count) == 0) {
+            /*if ((unansweredQuestions.Count + unansweredQuestionsWithImages.Count) == 0) {
                 Finish (1);
-            }
+            }*/
         }
         if ((secondChance == false) && (levelChosen != 4)) {
-            answeredCount++;
+            
         }
         if ((answeredCount == 10) && (secondChance == false)) {
             Finish (1);
