@@ -61,7 +61,7 @@ public class PieceMovement : MonoBehaviour{
 
     IEnumerator RollDice(){
         diceValue = DiceValue();
-        Debug.Log(diceValue);
+        //?Debug.Log(diceValue);
 
         dice.SetActive(true);
         Image rend = dice.GetComponent<Image>();
@@ -97,19 +97,43 @@ public class PieceMovement : MonoBehaviour{
         pieceUI.UpdateUI(players, currentPlayer);
     }
 
+
     int DiceValue(){
+        int pos = players[currentPlayer].pos;
+        int d1Upper = (pos + 1);
+        int d2Upper = ((155 + 22 * pos)/31) + d1Upper;
+        int d3Upper = ((310 + 12 * pos)/31) + d2Upper;
+        int d4Upper = ((682 - 12 * pos)/31) + d3Upper;
+        int d5Upper = ((837 - 22 * pos)/31) + d4Upper;
+        int d6Upper = (-pos + 32) + d5Upper;
+
+        Debug.Log("0, " + d1Upper + ", " + d2Upper + ", " + d3Upper + ", " + d4Upper + ", " + d5Upper + ", " + d6Upper);
+
         System.Random rnd = new System.Random();
-        int diceValue = rnd.Next(1, 7);
-        return diceValue;
+        int randVal = rnd.Next(0, d6Upper);
+        randVal -= (players[currentPlayer].points/players[currentPlayer].questionsAsked)*10;
+
+        randVal = Mathf.Clamp(randVal, 0, d6Upper);
+
+        Debug.Log(randVal);
+
+        if(0 <=randVal && randVal <= d1Upper) return 1;
+        if(d1Upper < randVal && randVal <= d2Upper) return 2;
+        if(d2Upper < randVal && randVal <= d3Upper) return 3;
+        if(d3Upper < randVal && randVal <= d4Upper) return 4;
+        if(d4Upper < randVal && randVal <= d5Upper) return 5;
+        if(d5Upper < randVal && randVal <= d6Upper) return 6;
+
+        return 0;
     }
 
     public void MovePiece(){
         PlayerToken player = players[currentPlayer];
         player.pos += diceValue;
 
-        if(player.pos >= gameBoard.pathPos.Length){
+        if(player.pos > gameBoard.pathPos.Length){
             Debug.Log("Player " + currentPlayer + " won the game");
-            
+            return;
         }
         Vector2 newPathPos = gameBoard.pathPos[player.pos];
         player.avatar.transform.SetParent(gameBoard.board[(int)newPathPos.x - 1][(int)newPathPos.y - 1].transform);
