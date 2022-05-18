@@ -80,7 +80,7 @@ public class PieceMovement : MonoBehaviour{
         }
 
         rend.sprite = diceSides[diceValue - 1];
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(2f);
 
         dice.SetActive(false);
 
@@ -105,12 +105,12 @@ public class PieceMovement : MonoBehaviour{
 
     int DiceValue(){
         int pos = players[currentPlayer].pos;
-        int d1Upper = (pos + 1);
-        int d2Upper = ((155 + 22 * pos)/31) + d1Upper;
-        int d3Upper = ((310 + 12 * pos)/31) + d2Upper;
-        int d4Upper = ((682 - 12 * pos)/31) + d3Upper;
-        int d5Upper = ((837 - 22 * pos)/31) + d4Upper;
-        int d6Upper = (-pos + 32) + d5Upper;
+        int d1Upper = ((32-1)/(31-0))*pos + 1; //(0, 1) e (31, 32)
+        int d2Upper = (pos <= 31-2 ? ((27-5)/(29-0))*pos + 5 : 0) + d1Upper; //(0, 5) e (29,27)
+        int d3Upper = (pos <= 31-3 ? ((22-10)/(28-0))*pos + 10 : 0) + d2Upper; //(0, 10) e (28, 22)
+        int d4Upper = (pos <= 31-4 ? ((10-22)/(27-0))*pos + 22 : 0) + d3Upper; //(0, 22) e (27, 10)
+        int d5Upper = (pos <= 31-5 ? ((5-27)/(26-0))*pos + 27 : 0) + d4Upper; //(0, 27) e (26, 5)
+        int d6Upper = (pos <= 31-6 ? ((1-32)/(25-0))*pos + 32 : 0) + d5Upper; //(0, 32) e (25, 1)
 
         Debug.Log("0, " + d1Upper + ", " + d2Upper + ", " + d3Upper + ", " + d4Upper + ", " + d5Upper + ", " + d6Upper);
 
@@ -134,8 +134,9 @@ public class PieceMovement : MonoBehaviour{
     public void MovePiece(){
         PlayerToken player = players[currentPlayer];
         player.pos += diceValue;
+        Debug.Log("player.pos = " + player.pos);
 
-        if(player.pos > gameBoard.pathPos.Length){
+        if(player.pos >= gameBoard.pathPos.Length){
             updateUIscript.ShowWonScreen(players[currentPlayer].name);
             return;
         }
