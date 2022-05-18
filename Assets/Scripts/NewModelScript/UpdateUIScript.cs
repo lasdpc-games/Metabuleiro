@@ -10,7 +10,7 @@ public class UpdateUIScript : MonoBehaviour {
     [Header ("Generic UI")]
     public Text questionHolder, scoreText, correctionText, finishText;
     public Image correctionImage;
-    public GameObject afterAnswerPanel, finishPanel, ExitPanel, retryButton;
+    public GameObject afterAnswerPanel, wonScreen, ExitPanel;
     public Text afterAnswerPanelText;
 
     [Header ("UI For questions")]
@@ -19,17 +19,6 @@ public class UpdateUIScript : MonoBehaviour {
     public GameObject diceButton;
     public Text[] answerTextArray;
     private List<Text> answerTextList;
-    public void UpdateScreens (int operation) {
-        if (operation == 1) {
-            //Set all screens that stop the game to false
-        } else if (operation == 5) {
-            if (finishPanel.activeInHierarchy == false) {
-                finishPanel.SetActive (true);
-            } else {
-                finishPanel.SetActive (false);
-            }
-        }
-    }
     public void UpdateUI (int operation) {
         if (operation == 1) {
             //Updates the score display
@@ -53,9 +42,6 @@ public class UpdateUIScript : MonoBehaviour {
                 correctionText.gameObject.SetActive (true);
                 correctionImage.gameObject.SetActive (false);
                 correctionText.text = quizManager2Script.currentQuestion.correction;
-        } else if (operation == 12) {
-            //Set the "second chance button" to false
-            retryButton.SetActive (false);
         } else if (operation == 13) {
             finishText.text = " Parabéns!Você Acertou todas as perguntas!";
         } else if (operation == 14) {
@@ -65,14 +51,10 @@ public class UpdateUIScript : MonoBehaviour {
         } else if (operation == 17) {
             if (ExitPanel.activeInHierarchy == false) {
                 ExitPanel.SetActive (true);
-                if (quizManager2Script.secondChance == false) {
-                    timerScript.StopCoroutine ("Timer");
-                }
+                timerScript.StopCoroutine ("Timer");
             } else {
-                ExitPanel.gameObject.SetActive (false);
-                if (quizManager2Script.secondChance == false) {
-                    timerScript.StartCoroutine ("Timer",0);
-                }
+                ExitPanel.gameObject.SetActive (false);    
+                timerScript.StartCoroutine ("Timer",0);
             }
         }
     }
@@ -102,5 +84,10 @@ public class UpdateUIScript : MonoBehaviour {
 
     public void HideAfterAnswerScreen(){
         afterAnswerPanel.SetActive(false);
+    }
+
+    public void ShowWonScreen(string playerWhoWon){
+        wonScreen.SetActive(true);
+        finishText.text = "O JOGADOR " + playerWhoWon + " GANHOU!"; 
     }
 }

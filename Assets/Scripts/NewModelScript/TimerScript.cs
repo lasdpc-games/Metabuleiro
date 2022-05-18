@@ -40,12 +40,7 @@ public class TimerScript : MonoBehaviour {
             yield return new WaitForSeconds (timerDelayToSubtract);
             timeBar.fillAmount -= subtractiveAmount;
         }
-        if (QuizManager2.levelChosen == 4) {
-            updateUIScript.UpdateScreens (4);
-        } else {
-            updateUIScript.UpdateUI (18);
-            quizManager2Script.combo = 0;
-            updateUIScript.UpdateUI (2);
-        }
+        updateUIScript.UpdateUI (18);
+        updateUIScript.UpdateUI (2);
     }
 }

@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class PieceMovement : MonoBehaviour{
 
-    [Range(1,4)]
-    public int numberOfPlayers = 1;
+    public int numberOfPlayers;
     public Sprite[] avatars;
 
     public UpdateUIScript updateUIscript;
+    public QuizManager2 quizManagerScript;
     public PieceUI pieceUI;
     public GameObject dice;
 
@@ -17,7 +17,8 @@ public class PieceMovement : MonoBehaviour{
 
     // Reference to sprite renderer to change sprites
 
-    int turnsPlayed = 0, currentPlayer;
+    int turnsPlayed = 0;
+    public int currentPlayer;
     int diceValue;
 
     Board gameBoard;
@@ -25,6 +26,10 @@ public class PieceMovement : MonoBehaviour{
     PlayerToken[] players;
 
     void Start(){
+        if(PlayerSelectorUI.players == null){
+            quizManagerScript.BackToMenu(2);
+            return;
+        }
         diceSides = Resources.LoadAll<Sprite>("DiceSides/");
         gameBoard = GetComponent<Board>();
         QuizManager2.OnAnswer += Answer;
@@ -75,7 +80,7 @@ public class PieceMovement : MonoBehaviour{
         }
 
         rend.sprite = diceSides[diceValue - 1];
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(0.5f);
 
         dice.SetActive(false);
 
@@ -111,8 +116,7 @@ public class PieceMovement : MonoBehaviour{
 
         System.Random rnd = new System.Random();
         int randVal = rnd.Next(0, d6Upper);
-        randVal -= (players[currentPlayer].points/players[currentPlayer].questionsAsked)*10;
-
+        randVal -= (players[currentPlayer].points/(players[currentPlayer].questionsAsked+1))*10;
         randVal = Mathf.Clamp(randVal, 0, d6Upper);
 
         Debug.Log(randVal);
@@ -132,7 +136,7 @@ public class PieceMovement : MonoBehaviour{
         player.pos += diceValue;
 
         if(player.pos > gameBoard.pathPos.Length){
-            Debug.Log("Player " + currentPlayer + " won the game");
+            updateUIscript.ShowWonScreen(players[currentPlayer].name);
             return;
         }
         Vector2 newPathPos = gameBoard.pathPos[player.pos];
