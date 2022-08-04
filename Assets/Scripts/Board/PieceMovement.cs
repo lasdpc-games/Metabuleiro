@@ -95,10 +95,8 @@ public class PieceMovement : MonoBehaviour{
         if(v != 0){
             MovePiece();
             players[currentPlayer].points += 1;
-            currentPlayer = turnsPlayed%numberOfPlayers;
-        }else{
-            currentPlayer = turnsPlayed%numberOfPlayers;
         }
+        currentPlayer = turnsPlayed%numberOfPlayers;
         pieceUI.UpdateUI(players, currentPlayer);
     }
 
