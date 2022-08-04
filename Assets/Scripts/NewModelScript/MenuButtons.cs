@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class MenuButtons : MonoBehaviour
 {
 
-    public GameObject helpPanel, levelChoicePanel, medalRoomPanel,mainManuPanel;
+    public GameObject levelChoicePanel, mainManuPanel;
 
     public void OpenLevelChoicePanel()
     {
@@ -23,36 +23,9 @@ public class MenuButtons : MonoBehaviour
         } 
     }
 
-    public void Exit()
-    {
+    public void Exit(){
+        Debug.Log("Exit");
         Application.Quit();
-    }
-
-    public void Help()
-    {
-        if (helpPanel.activeInHierarchy == false)
-        {
-            mainManuPanel.SetActive(false);
-            helpPanel.gameObject.SetActive(true);
-        }
-        else
-        {
-            mainManuPanel.SetActive(true);
-            helpPanel.gameObject.SetActive(false);
-        }
-    }
-    public void OpenMedalRoom()
-    {
-        if (medalRoomPanel.activeInHierarchy == false)
-        {
-            mainManuPanel.SetActive(false);
-            medalRoomPanel.gameObject.SetActive(true);
-        }
-        else
-        {
-            mainManuPanel.SetActive(true);
-            medalRoomPanel.gameObject.SetActive(false);
-        }
     }
 
     public void LevelChoice(int levelSelected)
