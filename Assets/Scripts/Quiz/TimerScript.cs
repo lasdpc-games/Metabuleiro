@@ -17,7 +17,7 @@ public class TimerScript : MonoBehaviour {
             timeBar.fillAmount = 1;
         }
         
-        float timerDelayToSubtract = (float)quizManager2Script.sizeQuestion/20;
+        float timerDelayToSubtract = (float)quizManager2Script.sizeQuestion/50;
         Debug.Log(timerDelayToSubtract);
         float subtractiveAmount = 0.001f;
         while (timeBar.fillAmount > 0) {
