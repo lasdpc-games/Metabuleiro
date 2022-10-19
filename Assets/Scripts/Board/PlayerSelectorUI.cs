@@ -27,7 +27,7 @@ public class PlayerSelectorUI : MonoBehaviour{
 
         for(int i = 0; i < numberOfPlayers; i++){
             GameObject go = Instantiate(playerCreatorPrefab, playerCreatorHolder.transform);
-            string playerName = "Player0" + (i+1);
+            string playerName = "Player     0" + (i+1);
 
             go.transform.Find("Label").GetComponent<TMP_Text>().text = playerName;
 

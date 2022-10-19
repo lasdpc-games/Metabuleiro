@@ -13,7 +13,7 @@ public class Bubble : MonoBehaviour
 
         this.transform.SetParent(GameObject.Find("BubbleSpawn").transform);
 
-        myRectTransform.localPosition = new Vector3(Random.Range(-200, 200), -400, 0);
+        myRectTransform.localPosition = new Vector3(Random.Range(-800, 800), -400, 0);
 
         if (this.tag == "Bubble")
         {
@@ -33,14 +33,9 @@ public class Bubble : MonoBehaviour
 
     }
 
-   public void Clicked()
-    {
-        Destroy(this.gameObject);
-    }
-
     IEnumerator Destroyer()
     {
-        yield return new WaitForSeconds(14f);
+        yield return new WaitForSeconds(8f);
         Destroy(this.gameObject);
     }
 }

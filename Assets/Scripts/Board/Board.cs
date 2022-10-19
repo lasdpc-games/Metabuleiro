@@ -28,10 +28,11 @@ public class Board : MonoBehaviour{
         }
 
         for (int i = 0; i < pathPos.Length; i++){
-            byte colorG = Convert.ToByte(255 - 8*i);
-            byte colorB = Convert.ToByte(255 - 8*i);
+            byte colorG = Convert.ToByte(150 - 3*i);
+            byte colorB = Convert.ToByte(170 - 3*i);
+            byte colorR = Convert.ToByte(8*i);
 
-            board[(int)pathPos[i].x - 1][(int)pathPos[i].y - 1].GetComponent<Image>().color = new Color32(255,colorG,colorB,255);
+            board[(int)pathPos[i].x - 1][(int)pathPos[i].y - 1].GetComponent<Image>().color = new Color32(0,colorG,colorB,255);
             //?Debug.Log(board[(int)pathPos[i].x - 1][(int)pathPos[i].y - 1].name);
         }
     }

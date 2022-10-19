@@ -36,10 +36,8 @@ public class PieceMovement : MonoBehaviour{
 
         players = PlayerSelectorUI.players;
         numberOfPlayers = players.Length;
-        /*new PlayerToken[numberOfPlayers];*/
 
         for (int i = 0; i < numberOfPlayers; i++){
-            //players[i] = new PlayerToken();
             players[i].avatar = new GameObject("player0" + i+1, typeof(Image));
             players[i].avatar.transform.SetParent(FindObjectOfType<Canvas>().transform);
             players[i].avatar.transform.localScale = Vector3.one;
@@ -66,7 +64,6 @@ public class PieceMovement : MonoBehaviour{
 
     IEnumerator RollDice(){
         diceValue = DiceValue();
-        //?Debug.Log(diceValue);
 
         dice.SetActive(true);
         Image rend = dice.GetComponent<Image>();
@@ -86,9 +83,6 @@ public class PieceMovement : MonoBehaviour{
 
         players[currentPlayer].questionsAsked++;
         updateUIscript.ShowQuestion();
-        //if right
-        //correct answer animation
-        //MovePiece
     }
 
     void Answer(int v){
@@ -112,14 +106,14 @@ public class PieceMovement : MonoBehaviour{
         int d5Upper = ((837 - 22 * pos)/31) + d4Upper;
         int d6Upper = (-pos + 32) + d5Upper;
 
-        Debug.Log("0, " + d1Upper + ", " + d2Upper + ", " + d3Upper + ", " + d4Upper + ", " + d5Upper + ", " + d6Upper);
+        //Debug.Log("0, " + d1Upper + ", " + d2Upper + ", " + d3Upper + ", " + d4Upper + ", " + d5Upper + ", " + d6Upper);
 
         System.Random rnd = new System.Random();
         int randVal = rnd.Next(0, d6Upper);
         randVal -= (players[currentPlayer].points/(players[currentPlayer].questionsAsked+1))*10;
         randVal = Mathf.Clamp(randVal, 0, d6Upper);
 
-        Debug.Log(randVal);
+        //Debug.Log(randVal);
 
         if(0 <=randVal && randVal <= d1Upper) return 1;
         if(d1Upper < randVal && randVal <= d2Upper) return 2;
@@ -135,7 +129,7 @@ public class PieceMovement : MonoBehaviour{
         PlayerToken player = players[currentPlayer];
         player.pos += diceValue;
 
-        if(player.pos > gameBoard.pathPos.Length){
+        if(player.pos >= gameBoard.pathPos.Length){
             updateUIscript.ShowWonScreen(players[currentPlayer].name);
             return;
         }

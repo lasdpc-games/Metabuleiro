@@ -6,7 +6,7 @@ public class QuestionCSV : ScriptableObject {
     public string wrongAnswer1;
     public string wrongAnswer2;
     public string wrongAnswer3;
-    public string correction;
+    public int difficulty;
     public int correctAnswerValue;
 
 }
