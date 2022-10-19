@@ -23,7 +23,7 @@ public class PieceMovement : MonoBehaviour{
 
     Board gameBoard;
 
-    PlayerToken[] players;
+    public PlayerToken[] players;
 
     void Start(){
         if(PlayerSelectorUI.players == null){
