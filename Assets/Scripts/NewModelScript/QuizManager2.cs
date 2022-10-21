@@ -77,6 +77,7 @@ public class QuizManager2 : MonoBehaviour {
                 break;
             case 2:
                 SceneManager.LoadScene ("Menu");
+                AudioManager.GetInstance().Play("MenuTheme");
                 break;
         }
     }

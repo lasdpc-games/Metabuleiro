@@ -20,6 +20,7 @@ public class SettingsMenu : MonoBehaviour {
         resolutions = Screen.resolutions;
         int currentResolutionIndex = 0;
 
+        AudioManager.GetInstance().Play("ButtonOther");
         
         for (int i = 0; i < resolutions.Length; i++){
             string option = resolutions[i].width + " x " + resolutions[i].height;

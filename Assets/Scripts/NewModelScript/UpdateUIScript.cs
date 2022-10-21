@@ -60,6 +60,7 @@ public class UpdateUIScript : MonoBehaviour {
     }
 
     public void ShowQuestion(){
+        AudioManager.GetInstance().Play("ShowWindow");
         questionLayout.SetActive(true);
         boardGame.SetActive(false);
         diceButton.SetActive(false);
@@ -76,9 +77,11 @@ public class UpdateUIScript : MonoBehaviour {
         if(correct){
             afterAnswerPanelText.text = "Correto!";
             afterAnswerPanel.GetComponent<Image>().color = new Color32(0,255,0,255);
+            AudioManager.GetInstance().Play("CorrectAnswer");
         }else{
             afterAnswerPanelText.text = "Errado!";
             afterAnswerPanel.GetComponent<Image>().color = new Color32(255,0,0,255);
+            AudioManager.GetInstance().Play("WrongAnswer");
         }
     }
 
@@ -87,6 +90,8 @@ public class UpdateUIScript : MonoBehaviour {
     }
 
     public void ShowWonScreen(string playerWhoWon){
+        AudioManager.GetInstance().Pause("GameTheme");
+        AudioManager.GetInstance().Play("WinSound");
         wonScreen.SetActive(true);
         finishText.text = "O JOGADOR " + playerWhoWon + " GANHOU!"; 
     }
