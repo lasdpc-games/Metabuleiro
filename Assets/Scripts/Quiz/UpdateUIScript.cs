@@ -68,7 +68,7 @@ public class UpdateUIScript : MonoBehaviour {
     }
 
     public void ShowQuestion(){
-
+        AudioManager.GetInstance().Play("ShowWindow");
         questionLayout.SetActive(true);
         questionPanel.SetActive(true);
         currentPlayerDisplay.GetComponent<Image>().sprite = avatars[this.GetComponent<PieceMovement>().currentPlayer];
@@ -98,12 +98,15 @@ public class UpdateUIScript : MonoBehaviour {
         if(helper == 0){
              afterAnswerPanelText.text = "Errado!";
             afterAnswerPanel.GetComponent<Image>().color = new Color32(255,0,0,255);
+            AudioManager.GetInstance().Play("WrongAnswer");
         }else if (helper == 1){
             afterAnswerPanelText.text = "Correto!";
             afterAnswerPanel.GetComponent<Image>().color = new Color32(0,255,0,255);
+            AudioManager.GetInstance().Play("CorrectAnswer");
         }else if (helper == 2){
             afterAnswerPanelText.text = "O tempo acabou!";
             afterAnswerPanel.GetComponent<Image>().color = new Color32(255,255,0,255);
+            AudioManager.GetInstance().Play("WrongAnswer");
         }
     }
 
@@ -114,5 +117,7 @@ public class UpdateUIScript : MonoBehaviour {
     public void ShowWonScreen(string playerWhoWon){
         wonScreen.SetActive(true);
         finishText.text = "O JOGADOR " + playerWhoWon + " GANHOU!"; 
+        AudioManager.GetInstance().Pause("GameTheme");
+        AudioManager.GetInstance().Play("WinSound");
     }
 }

@@ -127,6 +127,7 @@ public class PieceMovement : MonoBehaviour{
 
     public void MovePiece(){
         PlayerToken player = players[currentPlayer];
+
         player.pos += diceValue;
 
         if(player.pos >= gameBoard.pathPos.Length){
@@ -134,6 +135,15 @@ public class PieceMovement : MonoBehaviour{
             return;
         }
         Vector2 newPathPos = gameBoard.pathPos[player.pos];
+
+        if(player.avatar == null){
+            if(players[currentPlayer].avatar == null){
+                print("complicou");
+            }
+            player.avatar = players[currentPlayer].avatar;
+            print("a");
+        }
+
         player.avatar.transform.SetParent(gameBoard.board[(int)newPathPos.x - 1][(int)newPathPos.y - 1].transform);
     }
 }

@@ -23,6 +23,7 @@ public class PlayerSelectorUI : MonoBehaviour{
 
         foreach (Transform child in playerCreatorHolder.transform) {
             GameObject.Destroy(child.gameObject);
+            AudioManager.GetInstance().Play("Pop");
         }
 
         for(int i = 0; i < numberOfPlayers; i++){

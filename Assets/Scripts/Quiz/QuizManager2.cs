@@ -86,7 +86,9 @@ public class QuizManager2 : MonoBehaviour {
                 updateUIScript.UpdateUI (17);
                 break;
             case 2:
+                OnAnswer = null;
                 SceneManager.LoadScene ("Menu");
+                AudioManager.GetInstance().Play("MenuTheme");
                 break;
         }
     }
