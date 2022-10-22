@@ -48,7 +48,7 @@ public class UpdateUIScript : MonoBehaviour {
             answerTextList = answerTextArray.ToList<Text> ();
             quizManager2Script.currentQuestion.correctAnswerValue = Random.Range (0, 3);
             //cheatmode
-                quizManager2Script.currentQuestion.correctAnswerValue = 0;
+                //quizManager2Script.currentQuestion.correctAnswerValue = 0;
                 
             answerTextList[quizManager2Script.currentQuestion.correctAnswerValue].text = quizManager2Script.currentQuestion.correctAnswer;
             answerTextList.RemoveAt (quizManager2Script.currentQuestion.correctAnswerValue);
